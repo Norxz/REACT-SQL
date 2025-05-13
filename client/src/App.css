@@ -1,28 +1,32 @@
+/* Estilo principal de la aplicación */
 .App {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
+  display: flex;                     /* Usa flexbox para organizar los elementos */
+  flex-direction: column;           /* Acomoda los elementos verticalmente */
+  justify-content: center;          /* Centra los elementos en el eje vertical */
 }
 
+/* Contenedor de los campos de datos */
 .datos {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  width: 100%;
-  align-items: center;
+  display: flex;                    /* Usa flexbox */
+  flex-direction: column;          /* Elementos en columna */
+  justify-content: center;         /* Centra verticalmente */
+  width: 100%;                      /* Ocupa todo el ancho disponible */
+  align-items: center;             /* Centra horizontalmente */
 }
 
+/* Estilo para los campos de entrada dentro de .datos */
 .datos input {
-  width: 300px;
-  height: 30px;
-  font-size: 20px;
-  padding-left: 10px;
-  border-radius: 5px;
-  margin: 5px;
+  width: 300px;                     /* Ancho fijo */
+  height: 30px;                     /* Alto fijo */
+  font-size: 20px;                  /* Tamaño de fuente */
+  padding-left: 10px;              /* Espacio interno a la izquierda */
+  border-radius: 5px;              /* Bordes redondeados */
+  margin: 5px;                      /* Espacio externo alrededor */
 }
 
+/* Estilo para los botones dentro de .datos */
 .datos button {
-  width: 320px;
-  height: 50px;
-  margin-top: 5px;
+  width: 320px;                     /* Ancho fijo mayor que los inputs */
+  height: 50px;                     /* Alto fijo */
+  margin-top: 5px;                  /* Separación superior */
 }

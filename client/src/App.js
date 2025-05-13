@@ -1,21 +1,26 @@
-import "./App.css";
-import { useState } from "react";
-import Axios from "axios";
-import "bootstrap/dist/css/bootstrap.min.css";
-
-import Swal from "sweetalert2";
+// Importación de estilos, hooks y librerías externas
+import "./App.css"; // Estilos personalizados
+import { useState } from "react"; // Hook de estado de React
+import Axios from "axios"; // Cliente HTTP para hacer peticiones
+import "bootstrap/dist/css/bootstrap.min.css"; // Estilos de Bootstrap
+import Swal from "sweetalert2"; // Librería para mostrar alertas modales
 
 function App() {
+  // Estados para los campos del formulario
   const [Nombre, setNombre] = useState("");
   const [Edad, setEdad] = useState("");
   const [Pais, setPais] = useState("");
   const [Cargo, setCargo] = useState("");
   const [Anios, setAnios] = useState("");
+
+  // Estado para almacenar el ID del empleado y modo de edición
   const [id, setID] = useState(null);
   const [editar, setEditar] = useState(false);
 
+  // Lista de empleados obtenida del backend
   const [empleadosLista, setEmpleados] = useState([]);
 
+  // Función para agregar un nuevo empleado
   const add = () => {
     Axios.post("http://localhost:3001/create", {
       Nombre: Nombre,
@@ -24,9 +29,10 @@ function App() {
       Cargo: Cargo,
       Anios: Anios,
     }).then(() => {
-      getEmpleados();
-      alert("Empleado registrado");
-      limpiarCampos();
+      getEmpleados(); // Actualizar la lista
+      alert("Empleado registrado"); // Alerta simple
+      limpiarCampos(); // Limpiar formulario
+      // Alerta personalizada con SweetAlert
       Swal.fire({
         title: "<strong>Resgistro Exitoso</strong>",
         html:
@@ -39,6 +45,7 @@ function App() {
     });
   };
 
+  // Función para actualizar un empleado existente
   const update = () => {
     Axios.put("http://localhost:3001/update", {
       id: id,
@@ -48,9 +55,10 @@ function App() {
       Cargo: Cargo,
       Anios: Anios,
     }).then(() => {
-      getEmpleados();
-      alert("Actulizado");
-      limpiarCampos();
+      getEmpleados(); // Actualizar lista
+      alert("Actulizado"); // Alerta simple
+      limpiarCampos(); // Limpiar formulario
+      // Alerta personalizada con SweetAlert
       Swal.fire({
         title: "<strong>Actualizacion Exitosa</strong>",
         html:
@@ -63,7 +71,9 @@ function App() {
     });
   };
 
+  // Función para eliminar un empleado
   const deleteEmple = (val) => {
+    // Mostrar confirmación con SweetAlert
     Swal.fire({
       title: "Confirmar eliminado??",
       html:
@@ -77,10 +87,12 @@ function App() {
       confirmButtonText: "Si, eliminarlo!",
     }).then((result) => {
       if (result.isConfirmed) {
+        // Si se confirma, realizar la eliminación
         Axios.delete(`http://localhost:3001/delete/${val.id}`)
           .then(() => {
-            getEmpleados();
-            limpiarCampos();
+            getEmpleados(); // Actualizar lista
+            limpiarCampos(); // Limpiar formulario
+            // Alerta de éxito
             Swal.fire({
               title: "Eliminado!",
               text: val.nombre + "fue eliminado",
@@ -89,6 +101,7 @@ function App() {
             });
           })
           .catch(function (error) {
+            // Alerta de error en caso de fallo
             Swal.fire({
               icon: "error",
               title: "Oops...",
@@ -100,6 +113,7 @@ function App() {
     });
   };
 
+  // Función para limpiar los campos del formulario
   const limpiarCampos = () => {
     setAnios("");
     setNombre("");
@@ -109,6 +123,7 @@ function App() {
     setEditar(false);
   };
 
+  // Función para cargar los datos del empleado en el formulario para editar
   const editarEmpleado = (val) => {
     setEditar(true);
     setNombre(val.nombre || "");
@@ -119,19 +134,22 @@ function App() {
     setID(val.id);
   };
 
+  // Función para obtener la lista de empleados del backend
   const getEmpleados = () => {
     Axios.get("http://localhost:3001/empleados").then((response) => {
-      setEmpleados(response.data);
+      setEmpleados(response.data); // Guardar empleados en el estado
     });
   };
 
-  getEmpleados();
+  getEmpleados(); // Llamado inicial para cargar la lista de empleados
 
+  // Renderizado del componente
   return (
     <div className="container">
       <div className="card text-center">
         <div className="card-header">Gestion de empleados</div>
         <div className="card-body">
+          {/* Campo de entrada: Nombre */}
           <div className="input-group mb-3">
             <span className="input-group-text" id="basic-addon1">
               Nombre:
@@ -149,6 +167,7 @@ function App() {
             />
           </div>
 
+          {/* Campo de entrada: Edad */}
           <div className="input-group mb-3">
             <span className="input-group-text" id="basic-addon1">
               Edad:
@@ -165,6 +184,8 @@ function App() {
               aria-describedby="basic-addon1"
             />
           </div>
+
+          {/* Campo de entrada: País */}
           <div className="input-group mb-3">
             <span className="input-group-text" id="basic-addon1">
               Pais:
@@ -182,6 +203,8 @@ function App() {
             />
           </div>
         </div>
+
+        {/* Campo de entrada: Cargo */}
         <div className="input-group mb-3">
           <span className="input-group-text" id="basic-addon1">
             Cargo:
@@ -198,6 +221,8 @@ function App() {
             aria-describedby="basic-addon1"
           />
         </div>
+
+        {/* Campo de entrada: Años de experiencia */}
         <div className="input-group mb-3">
           <span className="input-group-text" id="basic-addon1">
             Años:
@@ -215,6 +240,8 @@ function App() {
           />
         </div>
       </div>
+
+      {/* Botones de acción: Registrar o Actualizar */}
       <div className="card-footer text-muted">
         {editar ? (
           <div>
@@ -231,6 +258,8 @@ function App() {
           </button>
         )}
       </div>
+
+      {/* Tabla de empleados */}
       <table className="table table-hover">
         <thead>
           <tr>
@@ -259,6 +288,7 @@ function App() {
                     role="group"
                     aria-label="Basic example"
                   >
+                    {/* Botón para editar */}
                     <button
                       type="button"
                       onClick={() => {
@@ -268,6 +298,7 @@ function App() {
                     >
                       Editar
                     </button>
+                    {/* Botón para eliminar */}
                     <button
                       type="button"
                       onClick={() => deleteEmple(val)}
